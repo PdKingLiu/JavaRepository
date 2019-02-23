@@ -1,0 +1,4 @@
+
+	public static void main(String[] args) throws IOException {
+		InputStream s1 = new FileInputStream("file3.txt");
+		InputStream s2 = new FileInputStream("file5.txt");

@@ -1,0 +1,49 @@
+  /* Note: The two-argument File constructors do not interpret an empty
+       parent abstract pathname as the current user directory.  An empty parent
+       instead causes the child to be resolved against the system-dependent
+       directory defined by the FileSystem.getDefaultParent method.  On Unix
+       this default is "/", while on Microsoft Windows it is "\\".  This is required for
+       compatibility with the original behavior of this class. */
+
+    /**
+     * Creates a new <code>File</code> instance from a parent pathname string
+     * and a child pathname string.
+     *
+     * <p> If <code>parent</code> is <code>null</code> then the new
+     * <code>File</code> instance is created as if by invoking the
+     * single-argument <code>File</code> constructor on the given
+     * <code>child</code> pathname string.
+     *
+     * <p> Otherwise the <code>parent</code> pathname string is taken to denote
+     * a directory, and the <code>child</code> pathname string is taken to
+     * denote either a directory or a file.  If the <code>child</code> pathname
+     * string is absolute then it is converted into a relative pathname in a
+     * system-dependent way.  If <code>parent</code> is the empty string then
+     * the new <code>File</code> instance is created by converting
+     * <code>child</code> into an abstract pathname and resolving the result
+     * against a system-dependent default directory.  Otherwise each pathname
+     * string is converted into an abstract pathname and the child abstract
+     * pathname is resolved against the parent.
+     *
+     * @param   parent  The parent pathname string
+     * @param   child   The child pathname string
+     * @throws  NullPointerException
+     *          If <code>child</code> is <code>null</code>
+     */
+    public File(String parent, String child) {
+        if (child == null) {
+            throw new NullPointerException();
+        }
+        if (parent != null) {
+            if (parent.equals("")) {
+                this.path = fs.resolve(fs.getDefaultParent(),
+                                       fs.normalize(child));
+            } else {
+                this.path = fs.resolve(fs.normalize(parent),
+                                       fs.normalize(child));
+            }
+        } else {
+            this.path = fs.normalize(child);
+        }
+        this.prefixLength = fs.prefixLength(this.path);
+    }

@@ -1,0 +1,2 @@
+className=cn.FieldDemo_03.Person
+methodName=fun
